@@ -7,6 +7,8 @@ const modalAdd = document.querySelector(".modal__add"),
   catalog = document.querySelector(".catalog"),
   modalItem = document.querySelector(".modal__item");
 
+const elementsModalSubmit = [...modalSubmit.elements].filter(elem => elem.tagName !== 'BUTTON');
+
 const closeModal = function (event) {
   const target = event.target;
   if (target.closest(".modal__close") || target === this) {
@@ -21,6 +23,7 @@ const closeModalEsc = event => {
   if (event.code === 'Escape') {
     modalAdd.classList.add('hide');
     modalItem.classList.add('hide');
+    modalSubmit.reset();
     document.removeEventListener('keydown', closeModalEsc);
   }
 };
