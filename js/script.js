@@ -9,7 +9,6 @@ const modalAdd = document.querySelector(".modal__add"),
 
 const closeModal = function (event) {
   const target = event.target;
-
   if (target.closest(".modal__close") || target === this) {
     this.classList.add("hide");
     if (this === modalAdd) {
@@ -18,9 +17,18 @@ const closeModal = function (event) {
   }
 };
 
+const closeModalEsc = event => {
+  if (event.code === 'Escape') {
+    modalAdd.classList.add('hide');
+    modalItem.classList.add('hide');
+    document.removeEventListener('keydown', closeModalEsc);
+  }
+};
+
 btnAddAd.addEventListener("click", () => {
   modalAdd.classList.remove("hide");
   btnModalSubmin.disabled = true;
+  document.addEventListener('keydown', closeModalEsc);
 });
 
 modalAdd.addEventListener("click", closeModal);
@@ -28,11 +36,9 @@ modalItem.addEventListener("click", closeModal);
 
 catalog.addEventListener("click", (event) => {
   const target = event.target;
+
   if (target.closest('.card')) {
     modalItem.classList.remove('hide');
+    document.addEventListener('keydown', closeModalEsc);
   }
 });
-
-document.querySelector('keydown', event => {
-
-})
