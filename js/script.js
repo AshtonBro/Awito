@@ -1,7 +1,5 @@
 "use strict";
-
 const dataBase = JSON.parse(localStorage.getItem("awito")) || [];
-
 const modalAdd = document.querySelector(".modal__add"),
   btnAddAd = document.querySelector(".add__ad"),
   btnModalSubmin = document.querySelector(".modal__btn-submit"),
@@ -11,13 +9,12 @@ const modalAdd = document.querySelector(".modal__add"),
   btnModalWarning = document.querySelector(".modal__btn-warning"),
   modalFileInput = document.querySelector(".modal__file-input");
 
+const infoPhoto = {};
+const saveDB = () => localStorage.setItem("awito", JSON.stringify(dataBase));
+
 const elementsModalSubmit = [...modalSubmit.elements].filter(
   (elem) => elem.tagName !== "BUTTON" || elem.type !== "submit"
 );
-
-const infoPhoto = {};
-
-const saveDB = () => localStorage.setItem("awito", JSON.stringify(dataBase));
 
 const checkForm = () => {
   const validForm = elementsModalSubmit.every((elem) => elem.value);
@@ -67,8 +64,19 @@ catalog.addEventListener("click", (event) => {
   }
 });
 
+modalFileInput.addEventListener("change", (event) => {
+  const target = event.target;
+
+  const reader = new FileReader();
+
+  const file = target.files[0];
+
+  infoPhoto.filename = file.name;
+  infoPhoto.size = file.size;
+
+  reader.readAsBinaryString(file);
+});
+
 modalSubmit.addEventListener("input", checkForm);
 modalAdd.addEventListener("click", closeModal);
 modalItem.addEventListener("click", closeModal);
-
-modalFileInput.addEventListener("change", () => {});
