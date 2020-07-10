@@ -7,7 +7,9 @@ const modalAdd = document.querySelector(".modal__add"),
   catalog = document.querySelector(".catalog"),
   modalItem = document.querySelector(".modal__item"),
   btnModalWarning = document.querySelector(".modal__btn-warning"),
-  modalFileInput = document.querySelector(".modal__file-input");
+  modalFileInput = document.querySelector(".modal__file-input"),
+  btnModalFile = document.querySelector(".modal__file-btn"),
+  modalImageAdd = document.querySelector(".modal__image-add");
 
 const infoPhoto = {};
 const saveDB = () => localStorage.setItem("awito", JSON.stringify(dataBase));
@@ -44,6 +46,7 @@ modalSubmit.addEventListener("submit", (event) => {
   for (const elem of elementsModalSubmit) {
     itemObj[elem.name] = elem.value;
   }
+  itemObj.image = infoPhoto.base64;
   dataBase.push(itemObj);
   closeModal({ target: modalAdd });
   saveDB();
@@ -75,6 +78,15 @@ modalFileInput.addEventListener("change", (event) => {
   infoPhoto.size = file.size;
 
   reader.readAsBinaryString(file);
+  reader.addEventListener("load", (event) => {
+    if (infoPhoto.size < 200000) {
+      btnModalFile.textContent = infoPhoto.filename;
+      infoPhoto.base64 = btoa(event.target.result);
+      modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}`;
+    } else {
+      btnModalFile.textContent = "Размер файла не больше 200кб";
+    }
+  });
 });
 
 modalSubmit.addEventListener("input", checkForm);
