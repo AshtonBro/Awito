@@ -11,6 +11,9 @@ const modalAdd = document.querySelector(".modal__add"),
   btnModalFile = document.querySelector(".modal__file-btn"),
   modalImageAdd = document.querySelector(".modal__image-add");
 
+const textModalFile = btnModalFile.textContent;
+const srcModalImage = modalImageAdd.src;
+
 const infoPhoto = {};
 const saveDB = () => localStorage.setItem("awito", JSON.stringify(dataBase));
 
@@ -35,8 +38,28 @@ const closeModal = (event) => {
     modalItem.classList.add("hide");
     document.removeEventListener("keydown", closeModal);
     modalSubmit.reset();
+    modalImageAdd.src = srcModalImage;
+    btnModalFile.textContent = textModalFile;
     checkForm();
   }
+};
+
+const renderCard = () => {
+  catalog.textContent = "";
+  dataBase.forEach((item, id) => {
+    catalog.insertAdjacentHTML(
+      "beforeend",
+      `
+    <li class="card" data-id="${id}">
+      <img class="card__image" src="data:image/jpeg;base64,${item.image}" alt="test" />
+      <div class="card__description">
+        <h3 class="card__header">${item.nameItem}</h3>
+        <div class="card__price">${item.costItem} ₽</div>
+      </div>
+    </li>
+  `
+    );
+  });
 };
 
 // * AddEventListeners method
@@ -50,7 +73,8 @@ modalSubmit.addEventListener("submit", (event) => {
   dataBase.push(itemObj);
   closeModal({ target: modalAdd });
   saveDB();
-  modalSubmit.reset();
+  renderCard();
+  //modalSubmit.reset();
 });
 
 btnAddAd.addEventListener("click", () => {
@@ -69,9 +93,7 @@ catalog.addEventListener("click", (event) => {
 
 modalFileInput.addEventListener("change", (event) => {
   const target = event.target;
-
   const reader = new FileReader();
-
   const file = target.files[0];
 
   infoPhoto.filename = file.name;
@@ -85,6 +107,8 @@ modalFileInput.addEventListener("change", (event) => {
       modalImageAdd.src = `data:image/jpeg;base64,${infoPhoto.base64}`;
     } else {
       btnModalFile.textContent = "Размер файла не больше 200кб";
+      modalFileInput.valut = "";
+      checkForm();
     }
   });
 });
@@ -92,3 +116,5 @@ modalFileInput.addEventListener("change", (event) => {
 modalSubmit.addEventListener("input", checkForm);
 modalAdd.addEventListener("click", closeModal);
 modalItem.addEventListener("click", closeModal);
+
+renderCard();
