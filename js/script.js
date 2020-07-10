@@ -1,6 +1,6 @@
 "use strict";
 
-const dataBase = [];
+const dataBase = JSON.parse(localStorage.getItem("awito")) || [];
 
 const modalAdd = document.querySelector(".modal__add"),
   btnAddAd = document.querySelector(".add__ad"),
@@ -8,11 +8,16 @@ const modalAdd = document.querySelector(".modal__add"),
   modalSubmit = document.querySelector(".modal__submit"),
   catalog = document.querySelector(".catalog"),
   modalItem = document.querySelector(".modal__item"),
-  btnModalWarning = document.querySelector(".modal__btn-warning");
+  btnModalWarning = document.querySelector(".modal__btn-warning"),
+  modalFileInput = document.querySelector(".modal__file-input");
 
 const elementsModalSubmit = [...modalSubmit.elements].filter(
   (elem) => elem.tagName !== "BUTTON" || elem.type !== "submit"
 );
+
+const infoPhoto = {};
+
+const saveDB = () => localStorage.setItem("awito", JSON.stringify(dataBase));
 
 const checkForm = () => {
   const validForm = elementsModalSubmit.every((elem) => elem.value);
@@ -22,8 +27,6 @@ const checkForm = () => {
 
 const closeModal = (event) => {
   const target = event.target;
-  console.log("target: ", target);
-
   if (
     target.closest(".modal__close") ||
     target.classList.contains("modal") ||
@@ -46,19 +49,15 @@ modalSubmit.addEventListener("submit", (event) => {
   }
   dataBase.push(itemObj);
   closeModal({ target: modalAdd });
+  saveDB();
   modalSubmit.reset();
 });
-
-modalSubmit.addEventListener("input", checkForm);
 
 btnAddAd.addEventListener("click", () => {
   modalAdd.classList.remove("hide");
   btnModalSubmin.disabled = true;
   document.addEventListener("keydown", closeModal);
 });
-
-modalAdd.addEventListener("click", closeModal);
-modalItem.addEventListener("click", closeModal);
 
 catalog.addEventListener("click", (event) => {
   const target = event.target;
@@ -67,3 +66,9 @@ catalog.addEventListener("click", (event) => {
     document.addEventListener("keydown", closeModal);
   }
 });
+
+modalSubmit.addEventListener("input", checkForm);
+modalAdd.addEventListener("click", closeModal);
+modalItem.addEventListener("click", closeModal);
+
+modalFileInput.addEventListener("change", () => {});
