@@ -147,6 +147,18 @@ modalFileInput.addEventListener("change", (event) => {
   });
 });
 
+menuContainer.addEventListener("click", (event) => {
+  const target = event.target;
+
+  if (target.tagName === "A") {
+    const result = dataBase.filter(
+      (item) => item.category === target.dataset.category
+    );
+
+    renderCard(result);
+  }
+});
+
 modalSubmit.addEventListener("input", checkForm);
 modalAdd.addEventListener("click", closeModal);
 modalItem.addEventListener("click", closeModal);
