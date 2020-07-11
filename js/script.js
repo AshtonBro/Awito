@@ -97,9 +97,7 @@ catalog.addEventListener("click", (event) => {
   const target = event.target;
   const card = target.closest(".card");
   if (card) {
-    const item = dataBase.find((obj) => {
-      return obj.id == +card.dataset.id;
-    });
+    const item = dataBase.find((obj) => obj.id === parseInt(card.dataset.id));
 
     modalImageItem.src = `data:image/jpeg;base64,${item.image}`;
     modalHeaderItem.textContent = item.nameItem;
