@@ -1,5 +1,6 @@
 "use strict";
 const dataBase = JSON.parse(localStorage.getItem("awito")) || [];
+let counter = dataBase.length;
 const modalAdd = document.querySelector(".modal__add"),
   btnAddAd = document.querySelector(".add__ad"),
   btnModalSubmin = document.querySelector(".modal__btn-submit"),
@@ -17,7 +18,8 @@ const modalImageItem = document.querySelector(".modal__image-item"),
   modalDescriptionItem = document.querySelector(".modal__description-item"),
   modalCostItem = document.querySelector(".modal__cost-item");
 
-const searchInput = document.querySelector(".search__input");
+const searchInput = document.querySelector(".search__input"),
+  menuContainer = document.querySelector(".menu__container");
 const textModalFile = btnModalFile.textContent;
 const srcModalImage = modalImageAdd.src;
 
@@ -57,7 +59,7 @@ const renderCard = (DB = dataBase) => {
     catalog.insertAdjacentHTML(
       "beforeend",
       `
-    <li class="card" data-id-item="${item.id}">
+    <li class="card" data-id="${item.id}">
       <img class="card__image" src="data:image/jpeg;base64,${item.image}" alt="test" />
       <div class="card__description">
         <h3 class="card__header">${item.nameItem}</h3>
@@ -73,11 +75,10 @@ const renderCard = (DB = dataBase) => {
 modalSubmit.addEventListener("submit", (event) => {
   event.preventDefault();
   const itemObj = {};
-  let counter = 0;
   for (const elem of elementsModalSubmit) {
     itemObj[elem.name] = elem.value;
-    itemObj.id = counter++;
   }
+  itemObj.id = counter++;
   itemObj.image = infoPhoto.base64;
   dataBase.push(itemObj);
   closeModal({ target: modalAdd });
@@ -96,7 +97,9 @@ catalog.addEventListener("click", (event) => {
   const target = event.target;
   const card = target.closest(".card");
   if (card) {
-    const item = dataBase.find((item) => item.id === card.dataset.id);
+    const item = dataBase.find((obj) => {
+      return obj.id == +card.dataset.id;
+    });
 
     modalImageItem.src = `data:image/jpeg;base64,${item.image}`;
     modalHeaderItem.textContent = item.nameItem;
