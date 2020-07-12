@@ -1,6 +1,7 @@
 "use strict";
 const dataBase = JSON.parse(localStorage.getItem("awito")) || [];
 let counter = dataBase.length;
+
 const modalAdd = document.querySelector(".modal__add"),
   btnAddAd = document.querySelector(".add__ad"),
   btnModalSubmin = document.querySelector(".modal__btn-submit"),
@@ -20,6 +21,7 @@ const modalImageItem = document.querySelector(".modal__image-item"),
 
 const searchInput = document.querySelector(".search__input"),
   menuContainer = document.querySelector(".menu__container");
+
 const textModalFile = btnModalFile.textContent;
 const srcModalImage = modalImageAdd.src;
 
@@ -112,7 +114,6 @@ catalog.addEventListener("click", (event) => {
 
 searchInput.addEventListener("input", (event) => {
   const valueSearch = searchInput.value.trim().toLowerCase();
-
   if (valueSearch.length > 2) {
     const result = dataBase.filter(
       (item) =>
@@ -127,10 +128,8 @@ modalFileInput.addEventListener("change", (event) => {
   const target = event.target;
   const reader = new FileReader();
   const file = target.files[0];
-
   infoPhoto.filename = file.name;
   infoPhoto.size = file.size;
-
   reader.readAsBinaryString(file);
   reader.addEventListener("load", (event) => {
     if (infoPhoto.size < 200000) {
@@ -147,12 +146,10 @@ modalFileInput.addEventListener("change", (event) => {
 
 menuContainer.addEventListener("click", (event) => {
   const target = event.target;
-
   if (target.tagName === "A") {
     const result = dataBase.filter(
       (item) => item.category === target.dataset.category
     );
-
     renderCard(result);
   }
 });
