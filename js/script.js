@@ -2,6 +2,7 @@
 const dataBase = JSON.parse(localStorage.getItem("awito")) || [];
 let counter = dataBase.length;
 
+//* Get element from DOM
 const modalAdd = document.querySelector(".modal__add"),
   btnAddAd = document.querySelector(".add__ad"),
   btnModalSubmin = document.querySelector(".modal__btn-submit"),
@@ -55,6 +56,7 @@ const closeModal = (event) => {
   }
 };
 
+//* Creater new card for each times
 const renderCard = (DB = dataBase) => {
   catalog.textContent = "";
   DB.forEach((item) => {
