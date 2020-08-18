@@ -25,7 +25,6 @@ const searchInput = document.querySelector(".search__input"),
 
 const textModalFile = btnModalFile.textContent;
 const srcModalImage = modalImageAdd.src;
-
 const infoPhoto = {};
 const saveDB = () => localStorage.setItem("awito", JSON.stringify(dataBase));
 
