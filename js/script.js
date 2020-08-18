@@ -31,13 +31,11 @@ const saveDB = () => localStorage.setItem("awito", JSON.stringify(dataBase));
 const elementsModalSubmit = [...modalSubmit.elements].filter(
   (elem) => elem.tagName !== "BUTTON" || elem.type !== "submit"
 );
-
 const checkForm = () => {
   const validForm = elementsModalSubmit.every((elem) => elem.value);
   btnModalSubmin.disabled = !validForm;
   btnModalWarning.style.display = validForm ? "none" : "";
 };
-
 const closeModal = (event) => {
   const target = event.target;
   if (
